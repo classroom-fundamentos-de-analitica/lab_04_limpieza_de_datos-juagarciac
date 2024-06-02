@@ -28,4 +28,4 @@ def clean_data():
     df["fecha_de_beneficio"] = df["fecha_de_beneficio"].apply(limpiar_fecha)
     return df
 
-#print(clean_data())
+print(clean_data())
