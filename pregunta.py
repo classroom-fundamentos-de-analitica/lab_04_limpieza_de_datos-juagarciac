@@ -11,6 +11,7 @@ import pandas as pd
 
 def clean_data():
 
+    
     def limpiar_sexo(df):
         df = df.copy()
         df.sexo = df.sexo.str.lower()
@@ -26,7 +27,7 @@ def clean_data():
         df["barrio"] = df["barrio"].str.lower()
         return df
     
-    def limpiar_negocio(df):
+    def limpiar_idea(df):
         df = df.copy()
         df["idea_negocio"] = df["idea_negocio"].str.lower().str.strip()
         return df
@@ -48,7 +49,7 @@ def clean_data():
         ).fillna(pd.to_datetime(df.fecha_de_beneficio, format="%Y/%m/%d", errors="coerce"))
         return df
     
-    def limpiar_credito(df):
+    def limpiar_monto(df):
         df = df.copy()
         df.monto_del_credito = df.monto_del_credito.str.rstrip()
         df.monto_del_credito = df.monto_del_credito.replace("[,$]", "", regex=True)
@@ -56,18 +57,17 @@ def clean_data():
         df.monto_del_credito = df.monto_del_credito.astype(float)
         return df
     
-    
     df = pd.read_csv("solicitudes_credito.csv", sep=";", index_col=0)
     df = df.replace("-", " ", regex=True).replace("_", " ", regex=True)
-    df = limpiar_sexo(df)
+    df["sexo"] = df["sexo"].str.lower()
     df = limpiar_emprendimiento(df)
     df = limpiar_barrio(df)
-    df = limpiar_negocio(df)
+    df = limpiar_idea(df)
     df = limpiar_credito(df)
     df = limpiar_comuna(df)
     df = limpiar_fecha(df)
-    df = limpiar_credito(df)
+    df = limpiar_monto(df)
     df = df.drop_duplicates().dropna()
     return df
 
-print(clean_data())
+print(clean_data().sexo.value_counts().to_list() )
